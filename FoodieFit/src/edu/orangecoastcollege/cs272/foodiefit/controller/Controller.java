@@ -2,8 +2,8 @@ package edu.orangecoastcollege.cs272.foodiefit.controller;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -69,46 +69,46 @@ public class Controller {
 			
 			try {
 				theOne.mUserDB = new DBModel(DB_NAME, USER_TABLE_NAME, USER_FIELD_NAMES, USER_FIELD_TYPES);
-				ResultSet rs = theOne.mUserDB.getAllRecords();
-				while (rs.next()) {
-					int id = rs.getInt(USER_FIELD_NAMES[0]);
-					String username = rs.getString(USER_FIELD_NAMES[1]);
-					String name = rs.getString(USER_FIELD_NAMES[2]);
-					int age = rs.getInt(USER_FIELD_NAMES[3]);
-					int height = rs.getInt(USER_FIELD_NAMES[4]);
-					int weight = rs.getInt(USER_FIELD_NAMES[5]);
+				ArrayList<ArrayList<String>> resultsList = theOne.mUserDB.getAllRecords();
+				for (ArrayList<String> values : resultsList) {
+					int id = Integer.parseInt(values.get(0));
+					String username = values.get(1);
+					String name = values.get(2);
+					int age = Integer.parseInt(values.get(3));
+					int height = Integer.parseInt(values.get(4));
+					int weight = Integer.parseInt(values.get(5));
 					theOne.mAllUsersList.add(new User(id, username, name, age, height, weight));
 				}
 				
 				theOne.mFoodDB = new DBModel(DB_NAME, FOOD_TABLE_NAME, FOOD_FIELD_NAMES, FOOD_FIELD_TYPES);
 				theOne.initializeFoodDBFromFile();
-				rs = theOne.mFoodDB.getAllRecords();
-				while (rs.next()) {
-					int id = rs.getInt(FOOD_FIELD_NAMES[0]);
-					String name = rs.getString(FOOD_FIELD_NAMES[1]);
-					int calories = rs.getInt(FOOD_FIELD_NAMES[2]);
-					double weight = rs.getDouble(FOOD_FIELD_NAMES[3]);
-					String measure = rs.getString(FOOD_FIELD_NAMES[4]);
+				resultsList = theOne.mFoodDB.getAllRecords();
+				for (ArrayList<String> values : resultsList) {
+					int id = Integer.parseInt(values.get(0));
+					String name = values.get(1);
+					int calories = Integer.parseInt(values.get(2));
+					double weight = Double.parseDouble(values.get(3));
+					String measure = values.get(4);
 					theOne.mAllFoodsList.add(new Food(id, name, calories, weight, measure));
 				}
 				
 				theOne.mMealDB = new DBModel(DB_NAME, MEAL_TABLE_NAME, MEAL_FIELD_NAMES, MEAL_FIELD_TYPES);
-				rs = theOne.mMealDB.getAllRecords();
-				while (rs.next()) {
-					int id = rs.getInt(MEAL_FIELD_NAMES[0]);
-					String name = rs.getString(MEAL_FIELD_NAMES[1]);
-					String plan = rs.getString(MEAL_FIELD_NAMES[2]);
-					int calories = rs.getInt(MEAL_FIELD_NAMES[3]);
+				resultsList = theOne.mMealDB.getAllRecords();
+				for (ArrayList<String> values : resultsList) {
+					int id = Integer.parseInt(values.get(0));
+					String name = values.get(1);
+					String plan = values.get(2);
+					int calories = Integer.parseInt(values.get(3));
 					theOne.mAllMealsList.add(new Meal(id, name, plan, calories));
 				}
 				
 				theOne.mCheatMealDB = new DBModel(DB_NAME, CHEAT_MEAL_TABLE_NAME, CHEAT_MEAL_FIELD_NAMES, CHEAT_MEAL_FIELD_TYPES);
-				rs = theOne.mCheatMealDB.getAllRecords();
-				while (rs.next()) {
-					int id = rs.getInt(CHEAT_MEAL_FIELD_NAMES[0]);
-					String name = rs.getString(CHEAT_MEAL_FIELD_NAMES[1]);
-					String cheatMeal = rs.getString(CHEAT_MEAL_FIELD_NAMES[2]);
-					int calories = rs.getInt(CHEAT_MEAL_FIELD_NAMES[3]);
+				resultsList = theOne.mCheatMealDB.getAllRecords();
+				for (ArrayList<String> values : resultsList) {
+					int id = Integer.parseInt(values.get(0));
+					String name = values.get(1);
+					String cheatMeal = values.get(2);
+					int calories = Integer.parseInt(values.get(3));
 					theOne.mAllCheatMealsList.add(new CheatMeal(id, name, cheatMeal, calories));
 				}
 				
@@ -148,23 +148,19 @@ public class Controller {
 	}
 	
 	public String signInUser(String username, String password) {
-		for (User user : theOne.mAllUsersList) {
+		for (User user : theOne.mAllUsersList)
 			if (user.getUsername().equalsIgnoreCase(username)) {
 				try {
-					ResultSet rs = theOne.mUserDB.getRecord(String.valueOf(user.getId()));
-					String storedPassword = rs.getString(USER_FIELD_NAMES[6]);
+					ArrayList<ArrayList<String>> resultsList = theOne.mUserDB.getRecord(String.valueOf(user.getId()));
+					String storedPassword = resultsList.get(0).get(6);
 					if (password.equals(storedPassword)) {
 						theOne.mCurrentUser = user;
 						return "SUCCESS";
 					}
-					else
-						return "Password incorrect. Please try again.";
-				} catch (SQLException e) {
-					
-				}
+				} catch (SQLException e) {}
+				return "Incorrect password. Please try again.";
 			}
-		}
-		return "Username and password combination incorrect. Please try again.";
+		return "Username not found. Please try again.";
 	}
 	
 	public String signUpUser(String username, String name, String age, String height, String weight, String password) {
@@ -218,19 +214,20 @@ public class Controller {
 	
 	public ObservableList<Food> getFoodsForCurrentUser() {
 		ObservableList<Food> userFoodsList = FXCollections.observableArrayList();
-		
-		try {
-			ResultSet rs = theOne.mUserMealDB.getRecord(String.valueOf(mCurrentUser.getId()));
-			while (rs.next()) {
-				int foodId = rs.getInt(USER_MEAL_FIELD_NAMES[1]);
-				for (Food f : theOne.mAllFoodsList)
-					if (f.getId() == foodId)
-						userFoodsList.add(f);
-			} 
-		} catch (SQLException e) {
-			
+		if (theOne.mCurrentUser != null) {
+			try {
+				ArrayList<ArrayList<String>> resultsList = theOne.mUserMealDB.getRecord(String.valueOf(mCurrentUser.getId()));
+				for (ArrayList<String> values : resultsList) {
+					int foodId = Integer.parseInt(values.get(1));
+					for (Food f : theOne.mAllFoodsList)
+						if (f.getId() == foodId)
+							userFoodsList.add(f);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-			return userFoodsList;
+		return userFoodsList;
 	}
 	
 	public boolean addFood(String name, int calories, double weight, String measure) {

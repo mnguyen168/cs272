@@ -71,7 +71,7 @@ public class SignUpScene {
 		
 		String result = controller.signUpUser(username, name, age, height, weight, password);
 		if (result.equalsIgnoreCase("SUCCESS")) {
-			ViewNavigator.loadScene("Food List", ViewNavigator.FOOD_LIST_SCENE);
+			ViewNavigator.loadScene("Food List", ViewNavigator.SIGN_IN_SCENE);
 		}
 		else {
 			signUpErrorLabel.setText(result);
