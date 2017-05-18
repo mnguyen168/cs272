@@ -12,6 +12,7 @@ import javafx.scene.control.TextArea;
 
 public class BMRScene implements Initializable {
 	private static Controller controller = Controller.getInstance();
+	
 	@FXML
 	private TextArea bmrTA;
 	@FXML

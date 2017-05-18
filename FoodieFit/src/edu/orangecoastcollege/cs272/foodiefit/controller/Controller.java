@@ -241,6 +241,15 @@ public class Controller {
 		return true;
 	}
 	
+	public ObservableList<Food> filter(double calories) {
+		ObservableList<Food> filteredFoodsList = FXCollections.observableArrayList();
+		for (Food f : theOne.mAllFoodsList) {
+			if (f.getCalories() >= calories)
+				filteredFoodsList.add(f);
+		}
+		return filteredFoodsList;
+	}
+	
 	public User getCurrentUser() {
 		return mCurrentUser;
 	}

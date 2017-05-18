@@ -27,8 +27,8 @@
          <children>
             <Label text="Select Platform:" />
             <Label text="Select Publisher:" GridPane.rowIndex="1" />
-            <Label text="Filter Year:" GridPane.rowIndex="2" />
-            <Slider blockIncrement="5.0" majorTickUnit="11.0" max="2015.0" min="1982.0" minorTickCount="2" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Filter Calories:" GridPane.rowIndex="2" />
+            <Slider fx:id="caloriesSlider" blockIncrement="25.0" max="200.0" minorTickCount="1" onMouseDragged="#filter" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <ComboBox prefWidth="200.0" GridPane.columnIndex="1" />
             <ComboBox prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
@@ -43,7 +43,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="40.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Add Food to Inventory" />
+            <Button mnemonicParsing="false" onAction="#addFood" text="Add Food" />
             <Button mnemonicParsing="false" onAction="#calculateBMR" text="Calculate BMR" />
          </children>
       </HBox>
