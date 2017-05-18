@@ -5,6 +5,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+/**
+ * The <code>SignInScene</code> displays the sign in scene to the user, which requires
+ * an email and password to view the foods list.
+ * 
+ * @author Michael Nguyen
+ * @version 1.0
+ *
+ */
 public class SignInScene {
 	private static Controller controller = Controller.getInstance();
 	
@@ -20,7 +28,7 @@ public class SignInScene {
 	private Label signInErrorLabel;
 	
 	@FXML
-	public Object signIn() {
+	private Object signIn() {
 		String username = usernameTF.getText();
 		String password = passwordTF.getText();
 		
@@ -47,7 +55,7 @@ public class SignInScene {
 	}
 	
 	@FXML
-	public Object loadSignUp() {
+	private Object loadSignUp() {
 		ViewNavigator.loadScene("Sign Up", ViewNavigator.SIGN_UP_SCENE);
 		return this;
 	}

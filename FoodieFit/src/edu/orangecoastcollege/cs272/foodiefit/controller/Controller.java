@@ -15,6 +15,14 @@ import edu.orangecoastcollege.cs272.foodiefit.model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * The <code>Controller</code> connects the databases to the JavaFX user interface. The Controller is a Singleton
+ * which serves as the one intermediary between the back-end and front-end of the application.
+ * 
+ * @author Michael Nguyen
+ * @version 1.0
+ *
+ */
 public class Controller {
 	
 	private static Controller theOne;
@@ -60,6 +68,10 @@ public class Controller {
 	
 	private Controller() {}
 	
+	/**
+	 * The <code>getInstance</code> gets the instance of the Controller.
+	 * @return The controller.
+	 */
 	public static Controller getInstance() {
 		if (theOne == null) {
 			theOne = new Controller();
@@ -121,6 +133,11 @@ public class Controller {
 		return theOne;
 	}
 	
+	/**
+	 * The <code>initializeDBFromFile</code> initializes the database from the file. This is for the food list.
+	 * @return The records created.
+	 * @throws SQLException
+	 */
 	private int initializeFoodDBFromFile() throws SQLException {
 		int recordsCreated = 0;
 		
@@ -147,6 +164,13 @@ public class Controller {
 		return recordsCreated;
 	}
 	
+	/**
+	 * The <code>signInUser</code> signs in a user with a registered username and password.
+	 * @param username The username of the user.
+	 * @param password The password of the user.
+	 * @return Success if the user passes all the requirements for signing in. For every invalidation, the return
+	 * displays the errorLabel.
+	 */
 	public String signInUser(String username, String password) {
 		for (User user : theOne.mAllUsersList)
 			if (user.getUsername().equalsIgnoreCase(username)) {
@@ -163,6 +187,17 @@ public class Controller {
 		return "Username not found. Please try again.";
 	}
 	
+	/**
+	 * The <code>signUpUser</code> signs up a user with a username, name, age, height, weight, and password.
+	 * @param username The username of the user.
+	 * @param name The name of the user.
+	 * @param age The age of the user.
+	 * @param height The height of the user.
+	 * @param weight The weight of the user.
+	 * @param password The password of the user.
+	 * @return Success if the user passes all the requirements for signing up. For every invalidation, the return displays
+	 * the errorLabel.
+	 */
 	public String signUpUser(String username, String name, String age, String height, String weight, String password) {
 		if (username.isEmpty() || name.isEmpty() || age.isEmpty() || height.isEmpty() || weight.isEmpty() || password.isEmpty())
 			return "";
@@ -196,22 +231,46 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * The <code>isValidPassword</code> checks to see whether or not a created password is valid.
+	 * @param password The created password from the user.
+	 * @return The errorLabel set to true if false or the errorLabel set to false if true.
+	 */
 	public boolean isValidPassword(String password) {
 		return password.matches("((?=.*[a-z])(?=.*[0-9])(?=.*[@#$%!])(?=.*[A-Z]).{8,16})");
 	}
 	
+	/**
+	 * The <code>isValidAge</code> checks to see whether or not an age entered is valid.
+	 * @param age The age entered from the user.
+	 * @return The errorLabel set to true if false or the errorLabel set to false if true.
+	 */
 	public boolean isValidAge(String age) {
 		return age.matches("[0-9]+");
 	}
 	
+	/**
+	 * The <code>isValidHeight</code> checks to see whether or not a height entered is valid.
+	 * @param height The height entered from the user.
+	 * @return The errorLabel set to true if false or the errorLabel set to false is true.
+	 */
 	public boolean isValidHeight(String height) {
 		return height.matches("[0-9]+");
 	}
 	
+	/**
+	 * The <code>isValidWeight</code> checks to see whether or not a weight entered is valid.
+	 * @param weight The weight entered from the user.
+	 * @return The errorLabel set to true if false or the errorLabel set to false is true.
+	 */
 	public boolean isValidWeight(String weight) {
 		return weight.matches("[0-9]+");
 	}
 	
+	/**
+	 * The <code>getFoodsForCurrentUser</code> gets the foods for the current user, logged in.
+	 * @return The foods of the current user.
+	 */
 	public ObservableList<Food> getFoodsForCurrentUser() {
 		ObservableList<Food> userFoodsList = FXCollections.observableArrayList();
 		if (theOne.mCurrentUser != null) {
@@ -230,6 +289,14 @@ public class Controller {
 		return userFoodsList;
 	}
 	
+	/**
+	 * The <code>addFood</code> adds a new food to the current list of food.
+	 * @param name The name of the food.
+	 * @param calories The calories of the food.
+	 * @param weight The weight in grams of the food.
+	 * @param measure The measure of the food.
+	 * @return Adding in food if all fields are met.
+	 */
 	public boolean addFood(String name, int calories, double weight, String measure) {
 		String[] values = {name, String.valueOf(calories), String.valueOf(weight), measure};
 		try {
@@ -241,6 +308,11 @@ public class Controller {
 		return true;
 	}
 	
+	/**
+	 * The <code>filter</code> filters the database with fields of calories.
+	 * @param calories The calories of the food.
+	 * @return The filtered list of foods.
+	 */
 	public ObservableList<Food> filter(double calories) {
 		ObservableList<Food> filteredFoodsList = FXCollections.observableArrayList();
 		for (Food f : theOne.mAllFoodsList) {
@@ -250,18 +322,34 @@ public class Controller {
 		return filteredFoodsList;
 	}
 	
+	/**
+	 * The <code>getCurrentUser</code> gets the current user.
+	 * @return The current user.
+	 */
 	public User getCurrentUser() {
 		return mCurrentUser;
 	}
 	
+	/**
+	 * The <code>getAllUsers</code> gets all the users from the database.
+	 * @return The users from the database.
+	 */
 	public ObservableList<User> getAllUsers() {
 		return theOne.mAllUsersList;
 	}
 	
+	/**
+	 * The <code>getAllFoods</code> gets all the foods from the database.
+	 * @return The foods from the database.
+	 */
 	public ObservableList<Food> getAllFoods() {
 		return theOne.mAllFoodsList;
 	}
 	
+	/**
+	 * The <code>getAllMeals</code> gets all the meals from the database.
+	 * @return The meals from the database.
+	 */
 	public ObservableList<Meal> getAllMeals() {
 		return theOne.mAllMealsList;
 	}

@@ -5,6 +5,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+/**
+ * The <code>AddFoodScene</code> allows the user to add a new food with a name, calories,
+ * weight, and measure.
+ * 
+ * @author Michael Nguyen
+ * @version 1.0
+ *
+ */
 public class AddFoodScene {
 	private static Controller controller = Controller.getInstance();
 	

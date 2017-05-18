@@ -11,6 +11,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 
+/**
+ * The <code>FoodsListScene</code> lists the food database to the user.
+ * 
+ * @author Michael Nguyen
+ * @version 1.0
+ *
+ */
 public class FoodsListScene implements Initializable {
 	private static Controller controller = Controller.getInstance();
 	
@@ -19,25 +26,28 @@ public class FoodsListScene implements Initializable {
 	@FXML
 	private Slider caloriesSlider;
 	
+	/**
+	 * The <code>initialize</code> initializes the food database to display to the user.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		allFoodsLV.setItems(controller.getAllFoods());
 	}
 	
 	@FXML
-	public Object calculateBMR() {
+	private Object calculateBMR() {
 		ViewNavigator.loadScene("Calculate BMR", ViewNavigator.BMR_SCENE);
 		return this;
 	}
 	
 	@FXML
-	public Object addFood() {
+	private Object addFood() {
 		ViewNavigator.loadScene("Add Food...", ViewNavigator.ADD_FOOD_SCENE);
 		return this;
 	}
 	
 	@FXML
-	public void filter() {
+	private void filter() {
 		ObservableList<Food> foodsList;
 		foodsList = controller.filter(caloriesSlider.getValue());
 		allFoodsLV.setItems(foodsList);

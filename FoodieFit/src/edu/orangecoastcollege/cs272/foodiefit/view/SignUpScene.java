@@ -5,6 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+/**
+ * The <code>SignUpScene</code> displays the sign up scene to the user, which requires
+ * a username, password, name, age, height, and weight.
+ * @author Michael
+ *
+ */
 public class SignUpScene {
 	private static Controller controller = Controller.getInstance();
 	
@@ -36,7 +42,7 @@ public class SignUpScene {
 	private Label signUpErrorLabel;
 	
 	@FXML
-	public Object signUp() {
+	private Object signUp() {
 		String username = usernameTF.getText();
 		String password = passwordTF.getText();
 		String name = nameTF.getText();
@@ -81,7 +87,7 @@ public class SignUpScene {
 	}
 	
 	@FXML
-	public Object loadSignIn() {
+	private Object loadSignIn() {
 		ViewNavigator.loadScene("Sign In", ViewNavigator.SIGN_IN_SCENE);
 		return this;
 	}
