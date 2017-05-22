@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 
 /**
  * The <code>SignInScene</code> displays the sign in scene to the user, which requires
- * an email and password to view the foods list.
+ * an username and password to view the foods list.
  * 
  * @author Michael Nguyen
  * @version 1.0
